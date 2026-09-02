@@ -558,7 +558,9 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* Duas montagens da mesma tomada. A vertical tem a câmera reenquadrada seguindo
    cada artista, e pesa um quarto da horizontal, então o celular carrega leve. */
 var SRC_WIDE = { video:'assets/hero-scrub.mp4',        bytes:8984784, poster:'assets/hero-poster.jpg' };
-var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4', bytes:3811926, poster:'assets/hero-poster-mobile.jpg' };
+/* ?v=2: a montagem vertical foi reenquadrada mantendo o mesmo nome de arquivo,
+   e navegador de aplicativo costuma servir o cache velho sem revalidar. */
+var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4?v=2', bytes:3811926, poster:'assets/hero-poster-mobile.jpg?v=2' };
 var VERT_Q = ['(max-width: 720px)', '(orientation: portrait) and (max-width: 1024px)'];
 var VERT_MQ = VERT_Q.map(function(q){ return matchMedia(q); });
 function isVertical(){ return VERT_MQ.some(function(m){ return m.matches; }); }
