@@ -1,14 +1,11 @@
-# material bruto, revisão e testes: pesado e não faz parte do site
+# material bruto, revisao, fotos originais e scripts de teste
 review/
-
-# foto original de pessoa real, usada só como referência local
-assets/artistas/
 
 # a skill e o zip dela
 .tmpskill/
 *.zip
 
-# credenciais e scripts de publicação nunca entram no repositório
+# credenciais e scripts de publicacao nunca entram no repositorio
 hostgator.env
 publicar.ps1
 publicar.sh
