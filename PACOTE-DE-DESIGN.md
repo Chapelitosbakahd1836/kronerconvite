@@ -177,7 +177,7 @@ artista na tela. Feito com ffmpeg, custo zero em créditos.
 
 | | Desktop | Celular e tablet em pé |
 |---|---|---|
-| Arquivo | `hero-scrub.mp4`, 1280x720, 8,8 MB | `hero-scrub-mobile.mp4`, 608x1080, 4,4 MB |
+| Arquivo | `hero-scrub.mp4`, 1280x720, 8,8 MB | `hero-scrub-mobile.mp4`, 608x1080, 3,6 MB |
 | Texto | ao lado do artista, lado oposto ao corpo | ancorado embaixo, com escurecimento em gradiente |
 | Contraste do pior pixel | 5,22:1 | 3,58:1 |
 

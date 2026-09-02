@@ -318,15 +318,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .vignette{background:linear-gradient(to bottom,rgba(7,11,36,.5) 0%,rgba(7,11,36,0) 18%,rgba(7,11,36,0) 58%,rgba(7,11,36,.5) 100%)}
   .loader{bottom:4vh}
 
-  /* ---------- reenquadramento do quadro no celular ----------
-     A montagem vertical deixa o Kroninho encostado na borda direita, e o corte
-     do cover ainda comia o braço dele. Ancorar o quadro à direita traz o leão
-     para dentro da tela, e o zoom leve dá presença. Os dois voltam ao neutro
-     assim que ele sai de cena, então o resto da jornada segue como estava.
-     Quem manda nos dois valores é o progresso da rolagem, no script. */
-  .stage .poster{background-position:var(--vx,50%) center;transform:var(--vfx,none);transform-origin:100% 50%}
-  .stage video{object-position:var(--vx,50%) 50%;transform:var(--vfx,translateZ(0));transform-origin:100% 50%}
-
   /* ---------- as falas que vivem entre um artista e outro ----------
      No celular elas não disputam espaço com ninguém: ficam no meio da tela,
      grandes, com o escurecimento saindo do centro em vez de subir do rodapé. */
@@ -567,7 +558,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* Duas montagens da mesma tomada. A vertical tem a câmera reenquadrada seguindo
    cada artista, e pesa um quarto da horizontal, então o celular carrega leve. */
 var SRC_WIDE = { video:'assets/hero-scrub.mp4',        bytes:8984784, poster:'assets/hero-poster.jpg' };
-var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4', bytes:4519626, poster:'assets/hero-poster-mobile.jpg' };
+var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4', bytes:3811926, poster:'assets/hero-poster-mobile.jpg' };
 var VERT_Q = ['(max-width: 720px)', '(orientation: portrait) and (max-width: 1024px)'];
 var VERT_MQ = VERT_Q.map(function(q){ return matchMedia(q); });
 function isVertical(){ return VERT_MQ.some(function(m){ return m.matches; }); }
@@ -668,31 +659,9 @@ function updateRail(p){
   }
 }
 
-/* ---------- o leão entra no meio da tela do celular ----------
-   Nos primeiros 15% da jornada o quadro fica ancorado na direita e um pouco
-   fechado, que é onde o Kroninho mora na montagem vertical. Depois disso ele
-   sai de cena e o quadro volta ao normal, sem corte, com uma saída de câmera
-   lenta. No desktop nada disso existe. */
-var vertOn = false, lastVx = -1;
-function clearFraming(){
-  if (lastVx === -1) return;
-  lastVx = -1;
-  stage.style.removeProperty('--vx');
-  stage.style.removeProperty('--vfx');
-}
-function updateFraming(p){
-  if (!vertOn){ clearFraming(); return; }
-  var k = 1 - smoothstep(p, 0.055, 0.155);
-  if (lastVx >= 0 && Math.abs(k - lastVx) < 0.004) return;
-  lastVx = k;
-  stage.style.setProperty('--vx', (50 + 50 * k).toFixed(1) + '%');
-  stage.style.setProperty('--vfx', 'scale(' + (1 + 0.14 * k).toFixed(3) + ')');
-}
-
 /* ---------- faixas ---------- */
 var loadK = 0;
 function updateCaptions(p){
-  updateFraming(p);
   for (var i = 0; i < bands.length; i++){
     var bd = bands[i], a = bd.a, b = bd.b;
     var f = Math.min(0.02, (b - a) / 3);
@@ -867,9 +836,7 @@ function disableScrub(){
   if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
 }
 function applyHeroMode(){
-  vertOn = isVertical();
-  if (!vertOn) clearFraming();
-  if (MQLS.some(function(m){ return m.matches; })){ clearFraming(); disableScrub(); }
+  if (MQLS.some(function(m){ return m.matches; })) disableScrub();
   else enableScrub();
 }
 MQLS.concat(VERT_MQ).forEach(function(m){
