@@ -317,6 +317,57 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .band .kicker{margin-bottom:1rem}
   .vignette{background:linear-gradient(to bottom,rgba(7,11,36,.5) 0%,rgba(7,11,36,0) 18%,rgba(7,11,36,0) 58%,rgba(7,11,36,.5) 100%)}
   .loader{bottom:4vh}
+
+  /* ---------- reenquadramento do quadro no celular ----------
+     A montagem vertical deixa o Kroninho encostado na borda direita, e o corte
+     do cover ainda comia o braço dele. Ancorar o quadro à direita traz o leão
+     para dentro da tela, e o zoom leve dá presença. Os dois voltam ao neutro
+     assim que ele sai de cena, então o resto da jornada segue como estava.
+     Quem manda nos dois valores é o progresso da rolagem, no script. */
+  .stage .poster{background-position:var(--vx,50%) center;transform:var(--vfx,none);transform-origin:100% 50%}
+  .stage video{object-position:var(--vx,50%) 50%;transform:var(--vfx,translateZ(0));transform-origin:100% 50%}
+
+  /* ---------- as falas que vivem entre um artista e outro ----------
+     No celular elas não disputam espaço com ninguém: ficam no meio da tela,
+     grandes, com o escurecimento saindo do centro em vez de subir do rodapé. */
+  .band.m-mid{align-items:center;padding-top:11vh;padding-bottom:11vh}
+  /* text-align precisa vir aqui: a regra de desktop .band.pos-right .inner
+     empata em especificidade e, sem isto, a fala do Kroninho fica alinhada
+     à esquerda em vez de centrada em cima dele. */
+  .band.m-mid .inner{align-self:center;max-width:min(600px,92vw);text-align:center}
+  .band.m-mid h1{font-size:clamp(2.5rem,13vw,4.6rem)}
+  .band.m-mid h2{font-size:clamp(1.75rem,8.6vw,3rem)}
+  .band.m-mid .lede{font-size:clamp(1rem,4.4vw,1.24rem);max-width:28ch;margin-top:1.4rem;
+    margin-left:auto;margin-right:auto}
+  /* a linha de cima só cabe inteira no celular com o espacejamento mais curto */
+  .band.m-mid .kicker{margin-bottom:1.2rem;font-size:.62rem;letter-spacing:.2em}
+  /* estes seletores precisam igualar os de cima em especificidade, senão o
+     escurecimento de rodapé vence a cascata e o texto fica solto no meio. */
+  .band.m-mid::before,
+  .band.m-mid.pos-center::before,.band.m-mid.pos-left::before,.band.m-mid.pos-right::before{
+    left:0;right:0;width:100%;top:0;bottom:0;height:100%;
+    background:radial-gradient(ellipse 112% 54% at 50% 50%,rgba(5,6,16,.88) 0%,rgba(5,6,16,.72) 42%,rgba(5,6,16,.3) 74%,rgba(5,6,16,0) 100%)}
+  .band.m-mid.deep::before,
+  .band.m-mid.pos-center.deep::before,.band.m-mid.pos-left.deep::before,.band.m-mid.pos-right.deep::before{
+    left:0;right:0;width:100%;top:0;bottom:0;height:100%;
+    background:radial-gradient(ellipse 120% 62% at 50% 50%,rgba(5,6,16,.96) 0%,rgba(5,6,16,.9) 42%,rgba(5,6,16,.58) 70%,rgba(5,6,16,.14) 90%,rgba(5,6,16,0) 100%)}
+}
+
+/* ---------- celular: cada passo entra por conta própria ----------
+   No desktop os quatro passos cabem juntos na tela e entram em cascata. No
+   celular cada um ocupa quase uma tela inteira, então a cascata terminava
+   muito antes de o passo 03 aparecer e ele chegava parado. Aqui cada passo
+   espera a própria vez, e o fio dourado cresce acompanhando os que já entraram. */
+@media (max-width:720px), (orientation:portrait) and (max-width:1024px){
+  .logi .steps.in .step.rise{opacity:0;transform:translateY(30px);transition-delay:0s}
+  .logi .steps.in .step.rise.in{opacity:1;transform:none;transition-delay:0s}
+  .logi .steps.in .step.rise::before{opacity:0;transform:scale(.4);background:var(--accent-muted);
+    box-shadow:0 0 0 3px var(--canvas);transition-delay:0s}
+  .logi .steps.in .step.rise.in::before{opacity:1;transform:scale(1);background:var(--accent);
+    box-shadow:0 0 0 3px var(--canvas),0 0 12px rgba(243,198,35,.75),0 0 26px rgba(243,198,35,.35);
+    transition-delay:.12s}
+  /* o fio deixa de se traçar de uma vez e passa a seguir os passos revelados */
+  .logi .steps.in::before{transform:scaleY(var(--lk,0));transition:transform .9s var(--ease-out)}
 }
 
 /* ---------- os dois portões do hero estático ----------
@@ -345,7 +396,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important;transition-delay:0s !important}
   .rise{opacity:1;transform:none}
-
+  /* sem movimento os passos já nascem prontos, e o fio nasce inteiro */
+  .logi .steps.in .step.rise{opacity:1;transform:none}
+  .logi .steps{--lk:1}
+  .logi .steps.in .step.rise::before{opacity:1;transform:scale(1);background:var(--accent);
+    box-shadow:0 0 0 3px var(--canvas),0 0 12px rgba(243,198,35,.75),0 0 26px rgba(243,198,35,.35)}
 }
 </style>
 </head>
@@ -366,7 +421,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="bands" id="bands">
 
       <!-- 0.00 a 2,5s: KRONINHO à esquerda. O texto mora à direita, longe dele. -->
-      <div class="band pos-right" data-a="0.000" data-b="0.078">
+      <div class="band pos-right m-mid" data-a="0.000" data-b="0.078">
         <div class="inner">
           <p class="kicker">Internacional Circo Kroner · desde 1990</p>
           <h2 class="split fx-drift" data-text="Alguém aqui dentro falou o seu nome."></h2>
@@ -375,7 +430,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
       <!-- TRANSIÇÃO 1, 2,5 a 4,0s: o leão saiu, o palhaço ainda não chegou.
            Quadro limpo, só luz dourada. A frase mais forte vive aqui, centralizada. -->
-      <div class="band pos-center deep" data-a="0.150" data-b="0.262" data-ramp="0.032">
+      <div class="band pos-center deep m-mid" data-a="0.150" data-b="0.262" data-ramp="0.032">
         <div class="inner">
           <h1 class="split fx-part" data-text="VOCÊ FOI ESCOLHIDO."></h1>
           <p class="lede after" style="margin-left:auto;margin-right:auto">Pouquíssimas pessoas foram selecionadas nesta cidade. Você é uma delas.</p>
@@ -396,7 +451,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       </div>
 
       <!-- TRANSIÇÃO 2, 7,8 a 8,8s: a câmera sobe do palhaço para a trapezista. -->
-      <div class="band pos-center" data-a="0.522" data-b="0.604">
+      <div class="band pos-center m-mid" data-a="0.522" data-b="0.604">
         <div class="inner">
           <h2 class="split fx-drift" data-text="Sessenta artistas. Cinco países. Trinta e cinco anos de estrada."></h2>
         </div>
@@ -411,7 +466,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       </div>
 
       <!-- TRANSIÇÃO 3, 11,2 a 12,2s: ela sai, o globo ainda não chegou. Quadro limpo. -->
-      <div class="band pos-center deep" data-a="0.740" data-b="0.836" data-spread="0.45">
+      <div class="band pos-center deep m-mid" data-a="0.740" data-b="0.836" data-spread="0.45">
         <div class="inner">
           <h2 class="split fx-scatter" data-text="DESAFIANDO OS LIMITES"></h2>
           <p class="lede after" style="margin-left:auto;margin-right:auto">Cinco motos dentro de uma esfera de aço. Zero margem de erro.</p>
@@ -515,9 +570,8 @@ var SRC_WIDE = { video:'assets/hero-scrub.mp4',        bytes:8984784, poster:'as
 var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4', bytes:4519626, poster:'assets/hero-poster-mobile.jpg' };
 var VERT_Q = ['(max-width: 720px)', '(orientation: portrait) and (max-width: 1024px)'];
 var VERT_MQ = VERT_Q.map(function(q){ return matchMedia(q); });
-function currentSrc(){
-  return VERT_MQ.some(function(m){ return m.matches; }) ? SRC_TALL : SRC_WIDE;
-}
+function isVertical(){ return VERT_MQ.some(function(m){ return m.matches; }); }
+function currentSrc(){ return isVertical() ? SRC_TALL : SRC_WIDE; }
 var WA_NUMBER   = '5511945368679';
 var WA_TEXT     = 'Olá! Recebi o convite do Circo Kroner (código KRONER 01). Meu @ é ______ e gostaria de confirmar minha presença.';
 
@@ -614,9 +668,31 @@ function updateRail(p){
   }
 }
 
+/* ---------- o leão entra no meio da tela do celular ----------
+   Nos primeiros 15% da jornada o quadro fica ancorado na direita e um pouco
+   fechado, que é onde o Kroninho mora na montagem vertical. Depois disso ele
+   sai de cena e o quadro volta ao normal, sem corte, com uma saída de câmera
+   lenta. No desktop nada disso existe. */
+var vertOn = false, lastVx = -1;
+function clearFraming(){
+  if (lastVx === -1) return;
+  lastVx = -1;
+  stage.style.removeProperty('--vx');
+  stage.style.removeProperty('--vfx');
+}
+function updateFraming(p){
+  if (!vertOn){ clearFraming(); return; }
+  var k = 1 - smoothstep(p, 0.055, 0.155);
+  if (lastVx >= 0 && Math.abs(k - lastVx) < 0.004) return;
+  lastVx = k;
+  stage.style.setProperty('--vx', (50 + 50 * k).toFixed(1) + '%');
+  stage.style.setProperty('--vfx', 'scale(' + (1 + 0.14 * k).toFixed(3) + ')');
+}
+
 /* ---------- faixas ---------- */
 var loadK = 0;
 function updateCaptions(p){
+  updateFraming(p);
   for (var i = 0; i < bands.length; i++){
     var bd = bands[i], a = bd.a, b = bd.b;
     var f = Math.min(0.02, (b - a) / 3);
@@ -791,7 +867,9 @@ function disableScrub(){
   if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
 }
 function applyHeroMode(){
-  if (MQLS.some(function(m){ return m.matches; })) disableScrub();
+  vertOn = isVertical();
+  if (!vertOn) clearFraming();
+  if (MQLS.some(function(m){ return m.matches; })){ clearFraming(); disableScrub(); }
   else enableScrub();
 }
 MQLS.concat(VERT_MQ).forEach(function(m){
@@ -799,13 +877,24 @@ MQLS.concat(VERT_MQ).forEach(function(m){
   else if (m.addListener) m.addListener(applyHeroMode);
 });
 
-/* ---------- entradas ---------- */
+/* ---------- entradas ----------
+   O fio dourado dos passos acompanha quantos passos já entraram. No desktop
+   ele continua se traçando inteiro de uma vez; só o celular lê o --lk. */
+function growStepLine(steps){
+  if (!steps || !steps.classList || !steps.classList.contains('steps')) return;
+  var total = steps.querySelectorAll('.step').length;
+  if (!total) return;
+  var done = steps.querySelectorAll('.step.in').length;
+  steps.style.setProperty('--lk', (done / total).toFixed(3));
+}
+
 if ('IntersectionObserver' in window){
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if (!e.isIntersecting) return;
       e.target.classList.add('in');
       io.unobserve(e.target);
+      if (e.target.classList.contains('step')) growStepLine(e.target.parentNode);
       if (e.target.classList.contains('stagger')){
         setTimeout(function(){ e.target.classList.add('settled'); }, 900);
       }
@@ -856,6 +945,9 @@ function pinToFinalStates(){
   disablePlx();
   [].slice.call(document.querySelectorAll('main .rise, main .stagger')).forEach(function(el){
     el.classList.add('in', 'settled');
+  });
+  [].slice.call(document.querySelectorAll('.logi .steps')).forEach(function(el){
+    el.style.setProperty('--lk', '1');
   });
   bulbs.forEach(function(b){ b.classList.add('on'); });
 }
