@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Você foi escolhido · Internacional Circo Kroner</title>
+<meta name="description" content="Um convite pessoal do Internacional Circo Kroner. Sessenta artistas, cinco países, uma lona climatizada e uma noite reservada para você.">
+<meta name="theme-color" content="#070B24">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070B24'/%3E%3Cpath d='M16 5 L27 25 H5 Z' fill='none' stroke='%23F3C623' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='19' r='2.6' fill='%23F3C623'/%3E%3C/svg%3E">
+<!-- DEPLOY STEP: trocar as duas URLs abaixo pela URL absoluta do ar antes de publicar -->
+<meta property="og:title" content="Você foi escolhido · Internacional Circo Kroner">
+<meta property="og:description" content="Um convite pessoal do Internacional Circo Kroner.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://EXEMPLO.com.br/">
+<meta property="og:image" content="https://EXEMPLO.com.br/assets/hero-ending.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,800&family=Manrope:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#070B24;
+  --panel:#0D1338;
+  --accent:#F3C623;
+  --accent-hover:#FFD84D;
+  --accent-muted:#8B6B14;
+  --ember:#D42030;
+  --text-primary:#F2EFE4;
+  --text-secondary:#A8B0D8;
+  --hair:rgba(168,176,216,.22);
+  --tshadow:0 1px 2px rgba(5,5,10,.95),0 3px 12px rgba(5,5,10,.78),0 10px 44px rgba(5,5,10,.8);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --display:'Bodoni Moda',Georgia,'Times New Roman',serif;
+  --text:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;overflow-x:clip}
+body{margin:0;background:var(--canvas);color:var(--text-primary);
+  font-family:var(--text);font-weight:300;font-size:clamp(16px,1.05vw,18px);line-height:1.65;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.04;margin:0;letter-spacing:-.012em}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#1A1206;padding:.7rem 1.1rem;border-radius:8px;font-weight:700;z-index:200}
+.skip:focus{left:1rem;top:1rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- ambiente fixo ---------- */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient .glow{position:absolute;left:50%;top:42%;width:150vmax;height:150vmax;transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 50% 50%,rgba(60,84,190,.20) 0%,rgba(60,84,190,.07) 34%,rgba(7,11,36,0) 68%);
+  animation:drift 74s var(--ease) -18s infinite alternate}
+.ambient .grain{position:absolute;inset:0;opacity:.05;
+  background-image:radial-gradient(circle at 20% 30%,#fff 0 .6px,transparent .7px),radial-gradient(circle at 70% 65%,#fff 0 .5px,transparent .6px);
+  background-size:180px 180px,240px 240px}
+@keyframes drift{from{transform:translate(-52%,-51%) scale(1)}to{transform:translate(-48%,-49%) scale(1.14)}}
+
+/* ---------- trilho de lâmpadas (assinatura) ---------- */
+.rail{position:fixed;top:0;bottom:0;width:34px;z-index:6;pointer-events:none;display:flex;flex-direction:column;
+  align-items:center;justify-content:space-around;padding:5vh 0}
+.rail.left{left:6px}
+.rail.right{right:6px}
+.rail .wire{position:absolute;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(139,107,20,.42) 8%,rgba(139,107,20,.42) 92%,transparent)}
+.rail .bulb{width:9px;height:9px;border-radius:50%;background:rgba(139,107,20,.30);
+  box-shadow:inset 0 0 0 1px rgba(243,198,35,.22);
+  transition:background .5s var(--ease),box-shadow .5s var(--ease)}
+.rail .bulb.on{background:var(--accent);
+  box-shadow:0 0 5px rgba(243,198,35,.95),0 0 16px rgba(243,198,35,.5),0 0 34px rgba(243,198,35,.24)}
+@media (max-width:1100px){.rail{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:1800vh;z-index:1}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#050818}
+.stage .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage .poster{background-size:cover;background-position:center;transition:opacity .9s var(--ease)}
+.stage video{opacity:0;transition:opacity .8s var(--ease);will-change:transform;transform:translateZ(0)}
+.stage.video-ready video{opacity:1}
+.stage.video-ready .poster{opacity:0}
+.stage.video-failed video{display:none}
+.scrim{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 120% 90% at 50% 45%,rgba(7,9,24,0) 34%,rgba(7,9,24,.6) 100%)}
+.vignette{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(7,11,36,.58) 0%,rgba(7,11,36,0) 24%,rgba(7,11,36,0) 74%,rgba(7,11,36,.7) 100%)}
+
+.loader{position:absolute;left:50%;bottom:7vh;transform:translateX(-50%);z-index:8;color:var(--accent);opacity:.85;
+  transition:opacity .7s var(--ease)}
+.loader svg{width:38px;height:38px;transform:rotate(-90deg)}
+.loader circle{transition:stroke-dashoffset .18s linear}
+.chev{display:block;width:22px;height:34px;border:1px solid var(--accent-muted);border-radius:999px;position:relative}
+.chev::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:4px;border-radius:50%;background:var(--accent);
+  transform:translateX(-50%);animation:chevdrop 2.1s var(--ease) -.4s infinite}
+@keyframes chevdrop{0%{transform:translate(-50%,0);opacity:0}25%{opacity:1}70%{transform:translate(-50%,14px);opacity:0}100%{opacity:0}}
+
+/* ---------- faixas ---------- */
+.bands{position:absolute;inset:0;z-index:5}
+.band{position:absolute;inset:0;display:grid;align-items:center;opacity:0;
+  padding:0 clamp(1.2rem,5vw,4.5rem);grid-template-columns:1fr 1fr}
+.band .inner{position:relative;z-index:2;max-width:min(560px,46vw);text-shadow:var(--tshadow)}
+/* o assunto vive de um lado, as palavras do outro */
+.band.pos-right .inner{grid-column:2;justify-self:end;text-align:left}
+.band.pos-left  .inner{grid-column:1;justify-self:start;text-align:left}
+.band.pos-center .inner{grid-column:1 / -1;justify-self:center;text-align:center;max-width:min(900px,88vw)}
+/* scrim ancorado na coluna do texto, nunca atravessando o meio */
+.band::before{content:"";position:absolute;top:-6%;bottom:-6%;width:66%;pointer-events:none;
+  opacity:calc(.25 + .75*var(--k,1));
+  background:radial-gradient(ellipse 76% 64% at 50% 50%,rgba(5,6,16,.68) 0%,rgba(5,6,16,.46) 46%,rgba(5,6,16,0) 76%)}
+.band.pos-right::before{right:-4%}
+.band.pos-left::before{left:-4%}
+.band.pos-center::before{left:17%;width:66%}
+/* o hero estático fica escondido por padrão; o bloco dos cinco portões o revela.
+   Esta regra precisa vir ANTES do portão, ou ela vence a cascata e apaga o hero. */
+.band.static-hero{display:none}
+.band.deep::before{background:radial-gradient(ellipse 80% 68% at 50% 50%,rgba(5,6,16,.76) 0%,rgba(5,6,16,.52) 46%,rgba(5,6,16,0) 78%)}
+
+.band .kicker{font-family:var(--mono);font-size:clamp(.6rem,.78vw,.72rem);letter-spacing:.34em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.4rem}
+.band h1{font-size:clamp(2.2rem,5vw,4.4rem);letter-spacing:-.022em}
+.band h2{font-size:clamp(1.6rem,3.1vw,2.7rem)}
+.band .lede{font-size:clamp(1rem,1.4vw,1.28rem);color:#E6E4DC;max-width:34ch;margin-top:1.2rem;font-weight:300}
+.band .em{color:var(--accent)}
+@media (max-width:1000px){
+  .band{grid-template-columns:1fr}
+  .band .inner{grid-column:1;max-width:min(620px,86vw);justify-self:center;text-align:center}
+  .band::before{left:0;right:0;width:100%}
+}
+
+/* montagem de texto */
+.w{display:inline-block;white-space:pre}
+.c{display:inline-block;will-change:transform,opacity}
+.fx-scatter .c{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.6,1);opacity:var(--kc);
+  transform:translate(calc((1 - var(--kc))*var(--jx,0px)),calc((1 - var(--kc))*var(--jy,0px))) rotate(calc((1 - var(--kc))*var(--jr,0deg)))}
+.fx-grid .c{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.9,1);opacity:var(--kc);
+  transform:translateX(calc((1 - var(--kc))*var(--jx,0px)))}
+.fx-drift .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);opacity:var(--kc);
+  transform:translateY(calc((1 - var(--kc))*-26px))}
+.fx-rise .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);opacity:var(--kc);
+  transform:translateY(calc((1 - var(--kc))*30px))}
+.fx-punch .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*3,1);
+  --ks:clamp(0,(var(--k,0) - var(--th,0) - var(--sd,.1))*var(--ss,3.2),1);
+  opacity:var(--kc);transform:scale(calc(0.62 + (0.38 + var(--ov,.12))*var(--kc) - var(--ov,.12)*var(--ks)))}
+.fx-punch .w.emw{--ov:.24;--sd:.16;--ss:2.6}
+.fx-part .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.6,1);opacity:var(--kc);
+  transform:translateX(calc((1 - var(--kc))*var(--jx,0px)))}
+.fx-depth .inner{transform:scale(calc(.88 + .12*clamp(0,var(--k,0)*1.5,1)))}
+.softcopy{position:absolute;inset:0;filter:blur(11px);opacity:calc(1 - clamp(0,var(--k,0)*1.6,1));pointer-events:none}
+.sharpcopy{position:relative;opacity:clamp(0,var(--k,0)*1.6,1)}
+.after{opacity:clamp(0,(var(--k,0) - .58)*3.2,1);transform:translateY(calc((1 - clamp(0,(var(--k,0) - .58)*3.2,1))*14px))}
+.afterb{opacity:clamp(0,(var(--k,0) - .74)*4,1);transform:translateY(calc((1 - clamp(0,(var(--k,0) - .74)*4,1))*14px))}
+@media (max-height:600px){.loader{display:none}}
+
+/* ---------- botões ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;
+  text-decoration:none;padding:1.05rem 2rem;border-radius:999px;text-shadow:none;
+  background:var(--accent);color:#1A1206;border:1px solid var(--accent);
+  transition:background .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease);
+  box-shadow:0 6px 30px rgba(243,198,35,.14)}
+.btn:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 10px 40px rgba(243,198,35,.28)}
+@media (pointer:coarse){.btn{min-height:44px}}
+
+/* ---------- abaixo da dobra ---------- */
+main{position:relative;z-index:2;background:var(--canvas)}
+section{position:relative;padding:clamp(5rem,11vh,9rem) clamp(1.2rem,6vw,3rem);overflow:hidden}
+.wrap{max-width:1140px;margin:0 auto;position:relative;z-index:2}
+
+/* ---------- parallax ---------- */
+.plxwrap{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.plxwrap::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,var(--canvas) 0%,rgba(7,11,36,.72) 26%,rgba(7,11,36,.72) 74%,var(--canvas) 100%)}
+.plx{position:absolute;left:0;top:-22%;width:100%;height:144%;object-fit:cover;
+  opacity:.30;will-change:transform;transform:translate3d(0,var(--py,0px),0)}
+.plx.dim{opacity:.18}
+.plxdots{position:absolute;left:0;top:-22%;width:100%;height:144%;opacity:.5;will-change:transform;
+  transform:translate3d(0,var(--py,0px),0);
+  background-image:radial-gradient(circle at 12% 18%,rgba(243,198,35,.5) 0 2px,transparent 3px),
+                   radial-gradient(circle at 78% 34%,rgba(243,198,35,.38) 0 3px,transparent 4px),
+                   radial-gradient(circle at 34% 72%,rgba(243,198,35,.3) 0 2px,transparent 3px),
+                   radial-gradient(circle at 62% 88%,rgba(243,198,35,.42) 0 2px,transparent 3px),
+                   radial-gradient(circle at 90% 62%,rgba(243,198,35,.26) 0 3px,transparent 4px);
+  background-size:520px 460px}
+.kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:.9rem}
+.kicker::after{content:"";height:1px;flex:1;background:linear-gradient(to right,var(--accent-muted),transparent)}
+.kicker.mid{justify-content:center}
+.kicker.mid::after{display:none}
+
+.logi{background:#090E2C;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.logi .steps{margin-top:2.8rem;position:relative;padding-left:clamp(1.6rem,3vw,2.6rem)}
+/* o fio dourado que se traça sozinho ao longo dos quatro passos */
+.logi .steps::before{content:"";position:absolute;left:0;top:.6rem;bottom:.6rem;width:1px;
+  background:linear-gradient(to bottom,var(--accent),var(--accent-muted));
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 1.5s var(--ease-out) .15s}
+.logi .steps.in::before{transform:scaleY(1)}
+.logi .step{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:baseline;
+  padding:1.7rem 0;border-bottom:1px solid var(--hair);position:relative}
+.logi .step:last-child{border-bottom:0}
+/* a lâmpada que acende no fio quando o passo entra */
+.logi .step::before{content:"";position:absolute;left:calc(-1*clamp(1.6rem,3vw,2.6rem) - 4px);top:2.15rem;
+  width:9px;height:9px;border-radius:50%;background:var(--accent-muted);
+  box-shadow:0 0 0 3px var(--canvas);
+  transform:scale(.4);opacity:0;
+  transition:transform .7s var(--ease-out),opacity .7s var(--ease),background .7s var(--ease),box-shadow .7s var(--ease)}
+.logi .steps.in .step::before{transform:scale(1);opacity:1;background:var(--accent);
+  box-shadow:0 0 0 3px var(--canvas),0 0 12px rgba(243,198,35,.75),0 0 26px rgba(243,198,35,.35)}
+.logi .steps.in .step:nth-child(1)::before{transition-delay:.35s}
+.logi .steps.in .step:nth-child(2)::before{transition-delay:.62s}
+.logi .steps.in .step:nth-child(3)::before{transition-delay:.89s}
+.logi .steps.in .step:nth-child(4)::before{transition-delay:1.16s}
+/* os passos entram deslizando da esquerda, não subindo como o resto da página */
+.logi .step.rise{opacity:0;transform:translateX(-34px)}
+.logi .steps.in .step.rise{opacity:1;transform:none}
+.logi .steps.in .step.rise:nth-child(1){transition-delay:.30s}
+.logi .steps.in .step.rise:nth-child(2){transition-delay:.57s}
+.logi .steps.in .step.rise:nth-child(3){transition-delay:.84s}
+.logi .steps.in .step.rise:nth-child(4){transition-delay:1.11s}
+.logi .steps.settled .step.rise:nth-child(1),.logi .steps.settled .step.rise:nth-child(2),
+.logi .steps.settled .step.rise:nth-child(3),.logi .steps.settled .step.rise:nth-child(4),
+.logi .steps.settled .step:nth-child(1)::before,.logi .steps.settled .step:nth-child(2)::before,
+.logi .steps.settled .step:nth-child(3)::before,.logi .steps.settled .step:nth-child(4)::before{transition-delay:0s !important}
+.logi .step .num{font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.14em}
+.logi .step h3{font-size:1.28rem;margin-bottom:.45rem}
+.logi .step p{color:var(--text-secondary);font-size:1rem;max-width:62ch}
+
+.seal{text-align:center;padding-top:clamp(4rem,8vh,6rem);padding-bottom:clamp(4rem,8vh,6rem)}
+.faq .qs{margin-top:2.8rem;border-top:1px solid var(--hair)}
+.faq details{border-bottom:1px solid var(--hair)}
+.faq summary{cursor:pointer;list-style:none;padding:1.5rem 0;display:flex;gap:1.2rem;align-items:baseline;
+  font-family:var(--display);font-size:clamp(1.12rem,2vw,1.42rem);transition:color .35s var(--ease)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--accent)}
+.faq summary::after{content:"+";margin-left:auto;color:var(--accent);font-family:var(--mono);font-size:1.1rem}
+.faq details[open] summary::after{content:"\2212"}
+.faq .ans{padding:0 0 1.7rem 0;color:var(--text-secondary);max-width:66ch;font-size:1.02rem}
+
+.cta{padding-bottom:clamp(4rem,9vh,7rem)}
+.stub{position:relative;border:1px solid var(--accent-muted);border-radius:18px;
+  background:linear-gradient(160deg,#111845,#0A0F30);padding:clamp(2.6rem,6vw,4.6rem);text-align:center;overflow:hidden}
+.stub::before,.stub::after{content:"";position:absolute;width:34px;height:34px;border-radius:50%;
+  background:var(--canvas);border:1px solid var(--accent-muted)}
+.stub::before{left:-18px;top:40%}
+.stub::after{right:-18px;top:40%}
+.perf{position:absolute;left:6%;right:6%;top:calc(40% + 17px);height:1px;
+  background:repeating-linear-gradient(to right,var(--accent-muted) 0 7px,transparent 7px 15px);opacity:.6}
+.stub h2{font-size:clamp(2.6rem,7vw,5.2rem);color:var(--accent)}
+.stub .sub{color:var(--text-secondary);max-width:44ch;margin:1.5rem auto 2.6rem;font-size:1.06rem}
+.stub .fine{margin-top:1.8rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--text-secondary);opacity:.7}
+
+/* ---------- o botão do WhatsApp: halo que pulsa e brilho que varre ----------
+   Só começa depois que o botão entra na tela, e só anima opacidade e transform. */
+.wa-halo{position:relative;display:inline-block;border-radius:999px}
+.wa-halo::before{content:"";position:absolute;inset:-7px;border-radius:999px;pointer-events:none;
+  box-shadow:0 0 0 2px rgba(243,198,35,.45),0 0 28px rgba(243,198,35,.55),0 0 64px rgba(243,198,35,.28);
+  opacity:0}
+.rise.in .wa-halo::before{animation:waPulse 3.6s var(--ease) -1.1s infinite}
+@keyframes waPulse{0%,100%{opacity:0}50%{opacity:1}}
+#wa{position:relative;overflow:hidden}
+#wa::after{content:"";position:absolute;top:-60%;bottom:-60%;left:-52%;width:36%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);
+  transform:skewX(-18deg) translateX(0)}
+.rise.in #wa::after{animation:waShine 3.6s var(--ease) -.5s infinite}
+@keyframes waShine{
+  0%{transform:skewX(-18deg) translateX(0)}
+  48%{transform:skewX(-18deg) translateX(430%)}
+  100%{transform:skewX(-18deg) translateX(430%)}}
+#wa:hover{transform:translateY(-2px) scale(1.02)}
+
+footer{border-top:1px solid var(--hair);padding:3rem clamp(1.2rem,6vw,3rem);background:#050818}
+footer .wrap{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:baseline;justify-content:space-between}
+footer .mark{font-family:var(--display);font-weight:800;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+footer p{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);opacity:.72}
+footer a{color:var(--text-secondary);text-decoration:none;transition:color .35s var(--ease)}
+footer a:hover{color:var(--accent)}
+
+/* entradas */
+.rise{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.rise.in,.in .rise{opacity:1;transform:none}
+.stagger .rise:nth-child(1){transition-delay:0ms}
+.stagger .rise:nth-child(2){transition-delay:90ms}
+.stagger .rise:nth-child(3){transition-delay:180ms}
+.stagger .rise:nth-child(4){transition-delay:270ms}
+.stagger.settled .rise:nth-child(1),.stagger.settled .rise:nth-child(2),
+.stagger.settled .rise:nth-child(3),.stagger.settled .rise:nth-child(4){transition-delay:0s !important}
+body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused !important}
+
+/* ---------- RETRATO: o celular também ganha a jornada, com o corte vertical ----------
+   O texto ancora embaixo, que é como se lê vídeo em pé, e o assunto fica livre acima. */
+@media (max-width:720px), (orientation:portrait) and (max-width:1024px){
+  .band{grid-template-columns:1fr;align-items:end;padding:0 clamp(1.1rem,5vw,2rem) 13vh}
+  .band .inner{grid-column:1;justify-self:center;text-align:center;max-width:min(560px,92vw)}
+  /* em retrato o escurecimento é sempre de borda a borda. Estes seletores precisam
+     igualar a especificidade dos de desktop (.band.pos-*), senão aqueles vencem
+     a cascata e deixam as laterais cruas, que foi um bug real pego na auditoria. */
+  .band::before,
+  .band.pos-center::before,.band.pos-left::before,.band.pos-right::before{
+    left:0;right:0;width:100%;top:auto;bottom:-8%;height:86%;
+    background:linear-gradient(to top,rgba(5,6,16,.9) 0%,rgba(5,6,16,.72) 30%,rgba(5,6,16,.34) 60%,rgba(5,6,16,0) 100%)}
+  /* as faixas fortes caem em cima da luz dourada mais viva, então escurecem mais */
+  .band.deep::before,
+  .band.pos-center.deep::before,.band.pos-left.deep::before,.band.pos-right.deep::before{
+    left:0;right:0;width:100%;height:104%;bottom:-4%;
+    background:linear-gradient(to top,rgba(5,6,16,.97) 0%,rgba(5,6,16,.95) 30%,rgba(5,6,16,.86) 50%,rgba(5,6,16,.6) 68%,rgba(5,6,16,.22) 86%,rgba(5,6,16,0) 100%)}
+  .band h1{font-size:clamp(2rem,9.2vw,3.2rem)}
+  .band h2{font-size:clamp(1.35rem,6vw,2.1rem)}
+  .band .lede{font-size:clamp(.95rem,3.9vw,1.12rem);margin-left:auto;margin-right:auto;max-width:30ch}
+  .band .kicker{margin-bottom:1rem}
+  .vignette{background:linear-gradient(to bottom,rgba(7,11,36,.5) 0%,rgba(7,11,36,0) 18%,rgba(7,11,36,0) 58%,rgba(7,11,36,.5) 100%)}
+  .loader{bottom:4vh}
+}
+
+/* ---------- os dois portões do hero estático ----------
+   Só movimento reduzido, e celular deitado, onde não existe altura para a jornada. */
+@media (prefers-reduced-motion:reduce),
+       (orientation:landscape) and (pointer:coarse) and (max-height:560px){
+  .hero{height:100vh}
+  .bands .band{display:none}
+  .bands .band.static-hero{display:grid;opacity:1}
+  .loader{display:none}
+  .rail{display:none}
+  /* o quadro final composto entra por CSS, então nenhum vídeo é baixado aqui */
+  .stage{background-image:url('assets/hero-ending.jpg');background-size:cover;background-position:center}
+}
+@media (prefers-reduced-motion:reduce) and (orientation:portrait){
+  .stage{background-image:url('assets/hero-ending-mobile.jpg')}
+}
+.band.static-hero::before{left:0;right:0;width:100%;
+  background:radial-gradient(ellipse 90% 70% at 50% 42%,rgba(5,6,16,.72) 0%,rgba(5,6,16,.5) 50%,rgba(5,6,16,.1) 82%)}
+.band.static-hero .inner{grid-column:1 / -1;justify-self:center;text-align:center;max-width:min(680px,88vw);
+  align-self:center}
+.band.static-hero h1{font-size:clamp(2.4rem,9vw,4.2rem)}
+.band.static-hero .lede{margin-left:auto;margin-right:auto}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;transition-delay:0s !important}
+  .rise{opacity:1;transform:none}
+
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<div class="ambient" aria-hidden="true"><div class="glow"></div><div class="grain"></div></div>
+<div class="rail left" aria-hidden="true"><span class="wire"></span></div>
+<div class="rail right" aria-hidden="true"><span class="wire"></span></div>
+
+<header class="hero" id="hero">
+  <div class="stage" id="stage">
+    <div class="poster" aria-hidden="true"></div>
+    <video id="hero-video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <div class="bands" id="bands">
+
+      <!-- 0.00 a 2,5s: KRONINHO à esquerda. O texto mora à direita, longe dele. -->
+      <div class="band pos-right" data-a="0.000" data-b="0.078">
+        <div class="inner">
+          <p class="kicker">Internacional Circo Kroner · desde 1990</p>
+          <h2 class="split fx-drift" data-text="Alguém aqui dentro falou o seu nome."></h2>
+        </div>
+      </div>
+
+      <!-- TRANSIÇÃO 1, 2,5 a 4,0s: o leão saiu, o palhaço ainda não chegou.
+           Quadro limpo, só luz dourada. A frase mais forte vive aqui, centralizada. -->
+      <div class="band pos-center deep" data-a="0.150" data-b="0.262" data-ramp="0.032">
+        <div class="inner">
+          <h1 class="split fx-part" data-text="VOCÊ FOI ESCOLHIDO."></h1>
+          <p class="lede after" style="margin-left:auto;margin-right:auto">Pouquíssimas pessoas foram selecionadas nesta cidade. Você é uma delas.</p>
+        </div>
+      </div>
+
+      <!-- 4,0 a 7,8s: O PALHAÇO entra pela direita. O texto passa para a esquerda. -->
+      <div class="band pos-left" data-a="0.278" data-b="0.362" data-spread="0.5">
+        <div class="inner">
+          <h2 class="split fx-scatter" data-text="Não é publicidade. Não é palhaçada."></h2>
+        </div>
+      </div>
+
+      <div class="band pos-left deep" data-a="0.378" data-b="0.472">
+        <div class="inner">
+          <h1 class="split fx-punch" data-text="É um convite." data-em="convite."></h1>
+        </div>
+      </div>
+
+      <!-- TRANSIÇÃO 2, 7,8 a 8,8s: a câmera sobe do palhaço para a trapezista. -->
+      <div class="band pos-center" data-a="0.522" data-b="0.604">
+        <div class="inner">
+          <h2 class="split fx-drift" data-text="Sessenta artistas. Cinco países. Trinta e cinco anos de estrada."></h2>
+        </div>
+      </div>
+
+      <!-- 8,8 a 11,2s: A TRAPEZISTA no centro. O texto encosta na direita. -->
+      <div class="band pos-right deep" data-a="0.612" data-b="0.702">
+        <div class="inner">
+          <h2 class="split fx-rise" data-text="REALIZANDO O SONHO DE VOAR"></h2>
+          <p class="lede after">Trapezistas. Nada entre a coragem e o chão.</p>
+        </div>
+      </div>
+
+      <!-- TRANSIÇÃO 3, 11,2 a 12,2s: ela sai, o globo ainda não chegou. Quadro limpo. -->
+      <div class="band pos-center deep" data-a="0.740" data-b="0.836" data-spread="0.45">
+        <div class="inner">
+          <h2 class="split fx-scatter" data-text="DESAFIANDO OS LIMITES"></h2>
+          <p class="lede after" style="margin-left:auto;margin-right:auto">Cinco motos dentro de uma esfera de aço. Zero margem de erro.</p>
+        </div>
+      </div>
+
+      <!-- 12,2 a 15s: a MOTO e o GLOBO ocupam o centro e a direita. Texto à esquerda. -->
+      <div class="band pos-left" data-a="0.844" data-b="0.928">
+        <div class="inner">
+          <h2 class="split fx-punch" data-text="O som que você vai ouvir não passa em vídeo." data-em="não"></h2>
+        </div>
+      </div>
+
+      <div class="band pos-left deep" data-a="0.936" data-b="1.0" data-ramp="0.022">
+        <div class="inner">
+          <h1 class="split fx-rise" data-text="Você está dentro."></h1>
+          <p class="lede after">Continue descendo. A produção te espera lá embaixo.</p>
+        </div>
+      </div>
+
+      <!-- hero estático: celular e movimento reduzido -->
+      <div class="band static-hero">
+        <div class="inner">
+          <p class="kicker mid">Internacional Circo Kroner · desde 1990</p>
+          <h1>VOCÊ FOI ESCOLHIDO.</h1>
+          <p class="lede">Um convite pessoal do Internacional Circo Kroner. Sessenta artistas, uma lona climatizada, e uma noite reservada para você.</p>
+          <p style="margin-top:2.2rem"><a class="btn" href="#convite">Aceitar o convite</a></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="loader" id="loader" aria-hidden="true">
+      <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.4"
+        stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/></svg>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <section class="logi">
+    <div class="wrap">
+      <p class="kicker rise">Como funciona na prática</p>
+      <h2 class="rise" style="font-size:clamp(1.9rem,4vw,3rem);margin-top:1.6rem;max-width:22ch">Quatro passos, e nenhum deles é você ficar na fila.</h2>
+      <div class="steps stagger">
+        <div class="step rise"><span class="num">01</span><div><h3>Você chama no WhatsApp</h3><p>Manda seu @ e as datas que funcionam para você. Quem responde é gente da produção, não é robô.</p></div></div>
+        <div class="step rise"><span class="num">02</span><div><h3>A gente confirma a data e o nome na lista</h3><p>Seu nome e o número de acompanhantes ficam registrados antes do dia. Nada de aparecer e descobrir que lotou.</p></div></div>
+        <div class="step rise"><span class="num">03</span><div><h3>Você chega uma hora antes</h3><p>Os ingressos são retirados na bilheteria física. Chegando com uma hora de folga, você entra sem correria e ainda dá tempo de gravar a chegada com a lona acesa.</p></div></div>
+        <div class="step rise"><span class="num">04</span><div><h3>Você assiste</h3><p>O resto é com os sessenta artistas.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="wrap">
+      <p class="kicker rise">Perguntas rápidas</p>
+      <div class="qs">
+        <details><summary>Sou obrigado a postar?</summary><div class="ans">Não. Você não assina nada e não tem prazo. Se você gostar, conta. Se não gostar, não conta. A gente prefere um post honesto de quem curtiu do que dez de quem foi por obrigação.</div></details>
+        <details><summary>Vocês vão mandar um roteiro do que eu tenho que falar?</summary><div class="ans">Não. Quem conhece o seu público é você. Se quiser dados nossos para citar, a produção manda. Mas o texto, o formato e o tom são inteiramente seus.</div></details>
+        <details><summary>Quantas pessoas posso levar?</summary><div class="ans">Até cinco ou seis pessoas no total, contando você. Combine o número no WhatsApp para a produção deixar tudo separado.</div></details>
+        <details><summary>Posso gravar dentro da lona?</summary><div class="ans">Pode. Combine com a produção no dia para eles te orientarem sobre os melhores pontos e sobre os momentos em que o espetáculo pede luz baixa.</div></details>
+        <details><summary>E se eu não conseguir na data marcada?</summary><div class="ans">Avisa no WhatsApp e a gente remarca, enquanto a lona estiver na cidade. A temporada é limitada, então quanto antes você falar, mais opção de dia você tem.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="convite">
+    <div class="plxwrap" aria-hidden="true">
+      <img class="plx" src="assets/hero-ending.jpg" alt="" data-plx="0.20" loading="lazy">
+      <div class="plxdots" data-plx="0.34"></div>
+    </div>
+    <div class="wrap">
+      <div class="stub">
+        <span class="perf" aria-hidden="true"></span>
+        <p class="kicker mid rise">Seu canhoto</p>
+        <h2 class="rise">Aceita?</h2>
+        <p class="sub rise">Toca no botão, manda seu @ e a data que te serve. A produção responde pessoalmente.</p>
+        <p class="rise"><span class="wa-halo"><a class="btn" id="wa" href="#" target="_blank" rel="noopener">Quero meu convite no WhatsApp</a></span></p>
+        <p class="fine">Convite pessoal e intransferível · Temporada limitada</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mark">Internacional Circo Kroner</span>
+    <p>Espetáculo e tradição desde 1990 · <a href="https://www.instagram.com/circokroneroficial/" target="_blank" rel="noopener">@circokroneroficial</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* Duas montagens da mesma tomada. A vertical tem a câmera reenquadrada seguindo
+   cada artista, e pesa um quarto da horizontal, então o celular carrega leve. */
+var SRC_WIDE = { video:'assets/hero-scrub.mp4',        bytes:8984784, poster:'assets/hero-poster.jpg' };
+var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4', bytes:4519626, poster:'assets/hero-poster-mobile.jpg' };
+var VERT_Q = ['(max-width: 720px)', '(orientation: portrait) and (max-width: 1024px)'];
+var VERT_MQ = VERT_Q.map(function(q){ return matchMedia(q); });
+function currentSrc(){
+  return VERT_MQ.some(function(m){ return m.matches; }) ? SRC_TALL : SRC_WIDE;
+}
+var WA_NUMBER   = '5511945368679';
+var WA_TEXT     = 'Olá! Recebi o convite do Circo Kroner (código KRONER 01). Meu @ é ______ e gostaria de confirmar minha presença.';
+
+var wa = document.getElementById('wa');
+if (wa) wa.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(WA_TEXT);
+
+var hero   = document.getElementById('hero');
+var stage  = document.getElementById('stage');
+var video  = document.getElementById('hero-video');
+var loader = document.getElementById('loader');
+var poster = stage.querySelector('.poster');
+
+function clamp(v, lo, hi){ return Math.min(hi, Math.max(lo, v)); }
+function smoothstep(p, e0, e1){
+  var t = clamp((p - e0) / (e1 - e0), 0, 1);
+  return t * t * (3 - 2 * t);
+}
+
+/* ---------- divisão de texto com semente ---------- */
+function rng(seed){ var s = seed >>> 0; return function(){ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+function splitText(el, index){
+  var text = el.getAttribute('data-text') || el.textContent;
+  var em = el.getAttribute('data-em') || '';
+  var r = rng(index * 7919 + 13);
+  var spread = parseFloat(el.getAttribute('data-spread'));
+  var words = text.split(' ');
+  var totalChars = text.replace(/ /g, '').length;
+
+  var sr = document.createElement('span');
+  sr.className = 'sr';
+  sr.textContent = text;
+
+  var vis = document.createElement('span');
+  vis.setAttribute('aria-hidden', 'true');
+
+  var seen = 0;
+  words.forEach(function(word, wi){
+    var w = document.createElement('span');
+    w.className = 'w';
+    if (em && word.indexOf(em) === 0) w.className += ' emw';
+    w.style.setProperty('--th', (wi / Math.max(1, words.length - 1) * 0.42 + r() * 0.05).toFixed(3));
+    for (var i = 0; i < word.length; i++){
+      var c = document.createElement('span');
+      c.className = 'c';
+      c.textContent = word[i];
+      var th = !isNaN(spread)
+        ? (seen / Math.max(1, totalChars - 1)) * spread + r() * 0.06
+        : r() * 0.5;
+      c.style.setProperty('--th', th.toFixed(3));
+      c.style.setProperty('--jx', ((r() * 2 - 1) * 44).toFixed(1) + 'px');
+      c.style.setProperty('--jy', ((r() * 2 - 1) * 34).toFixed(1) + 'px');
+      c.style.setProperty('--jr', ((r() * 2 - 1) * 16).toFixed(1) + 'deg');
+      w.appendChild(c);
+      seen++;
+    }
+    vis.appendChild(w);
+    if (wi < words.length - 1) vis.appendChild(document.createTextNode(' '));
+  });
+
+  el.textContent = '';
+  el.appendChild(sr);
+  el.appendChild(vis);
+}
+[].slice.call(document.querySelectorAll('.split')).forEach(splitText);
+
+var bandEls = [].slice.call(document.querySelectorAll('#bands .band:not(.static-hero)'));
+var bands = bandEls.map(function(el){
+  return { el: el,
+    a: parseFloat(el.getAttribute('data-a')),
+    b: parseFloat(el.getAttribute('data-b')),
+    ramp: parseFloat(el.getAttribute('data-ramp')) || 0,
+    op: -1, k: -1, first: false, last: false };
+});
+if (bands.length){ bands[0].first = true; bands[bands.length - 1].last = true; }
+
+/* ---------- trilho de lâmpadas ---------- */
+var BULBS = 22, bulbs = [], lastLit = -1;
+[].slice.call(document.querySelectorAll('.rail')).forEach(function(rail){
+  for (var i = 0; i < BULBS; i++){
+    var b = document.createElement('span');
+    b.className = 'bulb';
+    rail.appendChild(b);
+    bulbs.push(b);
+  }
+});
+function updateRail(p){
+  var lit = Math.round(p * BULBS);
+  if (lit === lastLit) return;
+  lastLit = lit;
+  for (var i = 0; i < bulbs.length; i++){
+    var on = (i % BULBS) < lit;
+    if (bulbs[i].classList.contains('on') !== on) bulbs[i].classList.toggle('on', on);
+  }
+}
+
+/* ---------- faixas ---------- */
+var loadK = 0;
+function updateCaptions(p){
+  for (var i = 0; i < bands.length; i++){
+    var bd = bands[i], a = bd.a, b = bd.b;
+    var f = Math.min(0.02, (b - a) / 3);
+    var op = (bd.first ? 1 : smoothstep(p, a, a + f)) * (bd.last ? 1 : (1 - smoothstep(p, b - f, b)));
+    if (p < a - 0.03 || p > b + 0.03) op = 0;
+
+    var k = clamp((p - a) / (bd.ramp || Math.min(0.025, (b - a) * 0.35)), 0, 1);
+    if (bd.first) k = Math.max(k, loadK);
+
+    if (Math.abs(op - bd.op) > 0.004){
+      bd.op = op;
+      bd.el.style.opacity = op.toFixed(3);
+      bd.el.style.visibility = op < 0.004 ? 'hidden' : 'visible';
+    }
+    if (Math.abs(k - bd.k) > 0.008){
+      bd.k = k;
+      bd.el.style.setProperty('--k', k.toFixed(3));
+    }
+  }
+  updateRail(p);
+}
+
+function heroProgress(){
+  var range = hero.offsetHeight - window.innerHeight;
+  if (range <= 0) return 0;
+  return clamp(-hero.getBoundingClientRect().top / range, 0, 1);
+}
+
+/* ---------- seeks travados ---------- */
+var seekBusy = false, pendingTime = null;
+function requestSeek(t){
+  if (!video.duration || !isFinite(t)) return;
+  if (seekBusy){ pendingTime = t; return; }
+  seekBusy = true;
+  try { video.currentTime = t; } catch(e){ seekBusy = false; }
+}
+video.addEventListener('seeked', function(){
+  seekBusy = false;
+  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; requestSeek(t); }
+});
+video.addEventListener('error', function(){ seekBusy = false; pendingTime = null; failVideo(); });
+
+/* ---------- loop rAF que descansa ---------- */
+var target = 0, shown = 0, rafId = null, lastTick = 0, heroOnScreen = true;
+function tick(now){
+  var dt = Math.min(100, now - (lastTick || now));
+  lastTick = now;
+  shown += (target - shown) * (1 - Math.pow(1 - 0.16, dt / 16.667));
+  if (Math.abs(target - shown) < 0.0005){ shown = target; rafId = null; lastTick = 0; }
+  else rafId = requestAnimationFrame(tick);
+  if (video.duration) requestSeek(shown * video.duration);
+  updateCaptions(shown);
+}
+function onScroll(){
+  target = heroProgress();
+  if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
+}
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(function(es){ heroOnScreen = es[0].isIntersecting; }).observe(hero);
+}
+
+/* ---------- Blob transmitido com anel ---------- */
+var started = false, inited = false, loadedSrc = null, objUrl = null, fetchCtrl = null;
+function startBlobFetch(){ if (started) return; started = true; loadHeroBlob().catch(failVideo); }
+function initHero(){
+  var src = currentSrc();
+  if (inited && loadedSrc === src.video) return;   /* já é essa montagem */
+  if (inited){
+    /* o aparelho girou e a outra montagem passou a valer: troca a fonte */
+    if (fetchCtrl){ try { fetchCtrl.abort(); } catch(e){} fetchCtrl = null; }
+    if (objUrl){ URL.revokeObjectURL(objUrl); objUrl = null; }
+    stage.classList.remove('video-ready', 'video-failed');
+    video.removeAttribute('src');
+    video.load();
+    started = false;
+    if (loader){ loader.style.opacity = ''; loader.removeAttribute('data-failed');
+      loader.innerHTML = '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/></svg>'; }
+  }
+  inited = true;
+  loadedSrc = src.video;
+  poster.style.backgroundImage = "url('" + src.poster + "')";
+  var pi = new Image();
+  pi.onload = startBlobFetch;
+  pi.onerror = startBlobFetch;
+  pi.src = src.poster;
+  setTimeout(startBlobFetch, 4000);
+  var t0 = performance.now();
+  (function ramp(now){
+    loadK = Math.min(1, (now - t0) / 900);
+    updateCaptions(heroProgress());
+    if (loadK < 1) requestAnimationFrame(ramp);
+  })(t0);
+}
+function loadHeroBlob(){
+  var src = currentSrc();
+  var ctrl = new AbortController();
+  fetchCtrl = ctrl;
+  var watchdog = setTimeout(function(){ ctrl.abort(); }, 20000);
+  var opts = { signal: ctrl.signal };
+  try { opts.priority = 'low'; } catch(e){}
+  var ringEl = loader.querySelector('circle');
+  return fetch(src.video, opts).then(function(res){
+    if (!res.ok || !res.body) throw new Error('sem corpo');
+    var total = Number(res.headers.get('Content-Length')) || src.bytes;
+    var reader = res.body.getReader();
+    var chunks = [], got = 0, lastRing = 0;
+    return (function pump(){
+      return reader.read().then(function(r){
+        if (r.done) return;
+        clearTimeout(watchdog);
+        watchdog = setTimeout(function(){ ctrl.abort(); }, 20000);
+        chunks.push(r.value);
+        got += r.value.length;
+        var frac = Math.min(1, got / total);
+        var now = performance.now();
+        if (now - lastRing > 100 || frac === 1){
+          lastRing = now;
+          if (ringEl) ringEl.style.setProperty('--ld', Math.round(126 * (1 - frac)));
+        }
+        return pump();
+      });
+    })().then(function(){
+      clearTimeout(watchdog);
+      fetchCtrl = null;
+      if (ringEl) ringEl.style.setProperty('--ld', 0);
+      if (objUrl) URL.revokeObjectURL(objUrl);
+      objUrl = URL.createObjectURL(new Blob(chunks, { type: 'video/mp4' }));
+      video.src = objUrl;
+      video.load();
+      video.addEventListener('canplay', function(){
+        loader.style.opacity = '0';
+        requestSeek(heroProgress() * video.duration);
+        stage.classList.add('video-ready');
+        onScroll();
+      }, { once: true });
+    });
+  });
+}
+function failVideo(){
+  if (loader && !loader.getAttribute('data-failed')){
+    loader.setAttribute('data-failed', '1');
+    loader.innerHTML = '<span class="chev"></span>';
+    loader.style.opacity = '1';
+  }
+  stage.classList.add('video-failed');
+}
+
+/* ---------- os dois portões do hero estático, vivos ----------
+   Celular em pé NÃO é mais portão: ele recebe a jornada com o corte vertical.
+   Estas strings precisam bater exatamente com as do CSS. */
+var GATES = [
+  '(prefers-reduced-motion: reduce)',
+  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)'
+];
+var MQLS = GATES.map(function(q){ return matchMedia(q); });
+var scrubOn = false;
+function enableScrub(){
+  initHero();                       /* re-checa a montagem certa a cada chamada */
+  if (scrubOn) return;
+  scrubOn = true;
+  window.addEventListener('scroll', onScroll, { passive: true });
+  bands.forEach(function(b){ b.op = -1; b.k = -1; });
+  lastLit = -1;
+  unpinFinalStates();
+  updateCaptions(heroProgress());
+  onScroll();
+}
+function disableScrub(){
+  if (!scrubOn) return;
+  scrubOn = false;
+  window.removeEventListener('scroll', onScroll);
+  if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
+}
+function applyHeroMode(){
+  if (MQLS.some(function(m){ return m.matches; })) disableScrub();
+  else enableScrub();
+}
+MQLS.concat(VERT_MQ).forEach(function(m){
+  if (m.addEventListener) m.addEventListener('change', applyHeroMode);
+  else if (m.addListener) m.addListener(applyHeroMode);
+});
+
+/* ---------- entradas ---------- */
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+      if (e.target.classList.contains('stagger')){
+        setTimeout(function(){ e.target.classList.add('settled'); }, 900);
+      }
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.14 });
+  [].slice.call(document.querySelectorAll('main .stagger, main .rise')).forEach(function(el){ io.observe(el); });
+}
+
+/* ---------- parallax das seções de baixo ---------- */
+var plx = [].slice.call(document.querySelectorAll('[data-plx]'));
+var plxRaf = null, plxOn = false;
+function updatePlx(){
+  plxRaf = null;
+  var vh = window.innerHeight;
+  for (var i = 0; i < plx.length; i++){
+    var el = plx[i];
+    var host = el.parentNode.parentNode;              /* a seção */
+    var r = host.getBoundingClientRect();
+    if (r.bottom < -200 || r.top > vh + 200) continue; /* fora da tela, não escreve */
+    var off = (vh / 2 - (r.top + r.height / 2)) * parseFloat(el.getAttribute('data-plx'));
+    if (Math.abs(off - (el._py || 0)) < 0.5) continue; /* só na mudança */
+    el._py = off;
+    el.style.setProperty('--py', off.toFixed(1) + 'px');
+  }
+}
+function onPlxScroll(){ if (plxRaf === null) plxRaf = requestAnimationFrame(updatePlx); }
+function enablePlx(){
+  if (plxOn) return;
+  plxOn = true;
+  window.addEventListener('scroll', onPlxScroll, { passive: true });
+  window.addEventListener('resize', onPlxScroll, { passive: true });
+  updatePlx();
+}
+function disablePlx(){
+  if (!plxOn) return;
+  plxOn = false;
+  window.removeEventListener('scroll', onPlxScroll);
+  window.removeEventListener('resize', onPlxScroll);
+  if (plxRaf !== null){ cancelAnimationFrame(plxRaf); plxRaf = null; }
+  plx.forEach(function(el){ el._py = 0; el.style.setProperty('--py', '0px'); });
+}
+
+/* ---------- movimento reduzido, ao vivo, nas duas direções ---------- */
+var pinned = false;
+function pinToFinalStates(){
+  pinned = true;
+  disableScrub();
+  disablePlx();
+  [].slice.call(document.querySelectorAll('main .rise, main .stagger')).forEach(function(el){
+    el.classList.add('in', 'settled');
+  });
+  bulbs.forEach(function(b){ b.classList.add('on'); });
+}
+function unpinFinalStates(){
+  if (!pinned) return;
+  pinned = false;
+  lastLit = -1;
+}
+var rm = matchMedia('(prefers-reduced-motion: reduce)');
+function onRM(e){
+  if (e.matches) pinToFinalStates();
+  else { applyHeroMode(); enablePlx(); }
+}
+if (rm.addEventListener) rm.addEventListener('change', onRM);
+else if (rm.addListener) rm.addListener(onRM);
+if (rm.matches) pinToFinalStates(); else enablePlx();
+
+document.addEventListener('visibilitychange', function(){
+  document.body.classList.toggle('paused', document.hidden);
+});
+
+applyHeroMode();
+})();
+</script>
+</body>
+</html>
