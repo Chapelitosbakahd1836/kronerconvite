@@ -63,6 +63,14 @@ img{max-width:100%;display:block}
   background-image:radial-gradient(circle at 20% 30%,#fff 0 .6px,transparent .7px),radial-gradient(circle at 70% 65%,#fff 0 .5px,transparent .6px);
   background-size:180px 180px,240px 240px}
 @keyframes drift{from{transform:translate(-52%,-51%) scale(1)}to{transform:translate(-48%,-49%) scale(1.14)}}
+/* No celular o palco e o main são opacos e cobrem a lona por inteiro: durante
+   todo o herói ela não pinta um pixel sequer (medido, diferença zero), e ainda
+   assim é uma camada de 150vmax se redimensionando sem parar, disputando GPU
+   com a decodificação do vídeo. Some enquanto o herói está na tela e volta
+   depois, no rodapé, que é o único lugar onde ela realmente aparece. */
+@media (pointer:coarse){
+  body.hero-on .ambient{display:none}
+}
 
 /* ---------- trilho de lâmpadas (assinatura) ---------- */
 .rail{position:fixed;top:0;bottom:0;width:34px;z-index:6;pointer-events:none;display:flex;flex-direction:column;
@@ -560,7 +568,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 var SRC_WIDE = { video:'assets/hero-scrub.mp4',        bytes:8984784, poster:'assets/hero-poster.jpg' };
 /* ?v=2: a montagem vertical foi reenquadrada mantendo o mesmo nome de arquivo,
    e navegador de aplicativo costuma servir o cache velho sem revalidar. */
-var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4?v=2', bytes:3811926, poster:'assets/hero-poster-mobile.jpg?v=2' };
+var SRC_TALL = { video:'assets/hero-scrub-mobile.mp4?v=2', bytes:5266099, poster:'assets/hero-poster-mobile.jpg?v=2' };
 var VERT_Q = ['(max-width: 720px)', '(orientation: portrait) and (max-width: 1024px)'];
 var VERT_MQ = VERT_Q.map(function(q){ return matchMedia(q); });
 function isVertical(){ return VERT_MQ.some(function(m){ return m.matches; }); }
@@ -686,23 +694,53 @@ function updateCaptions(p){
   updateRail(p);
 }
 
-function heroProgress(){
-  var range = hero.offsetHeight - window.innerHeight;
-  if (range <= 0) return 0;
-  return clamp(-hero.getBoundingClientRect().top / range, 0, 1);
+/* Ler offsetHeight e getBoundingClientRect dentro do onScroll obriga o
+   navegador a refazer o layout no meio do gesto, logo depois de a faixa
+   anterior ter escrito estilo. Medindo uma vez e lendo só a posição da
+   rolagem, o caminho crítico não toca mais em layout. */
+var heroTop = 0, heroRange = 0, lastW = 0, lastH = 0;
+function scrollY(){ return window.pageYOffset || document.documentElement.scrollTop || 0; }
+function measureHero(){
+  heroTop = hero.getBoundingClientRect().top + scrollY();
+  heroRange = hero.offsetHeight - window.innerHeight;
+  lastW = window.innerWidth; lastH = window.innerHeight;
 }
+function heroProgress(){
+  if (heroRange <= 0) return 0;
+  return clamp((scrollY() - heroTop) / heroRange, 0, 1);
+}
+/* A barra de endereço do celular aparecendo e sumindo dispara resize mudando
+   só a altura, e em poucos por cento. Remedir nessa hora deslocaria o vídeo no
+   meio do gesto, então só giro de tela e mudança de largura contam. */
+function onViewportChange(){
+  var w = window.innerWidth, h = window.innerHeight;
+  if (w === lastW && Math.abs(h - lastH) < lastH * 0.2) return;
+  measureHero();
+  onScroll();
+}
+window.addEventListener('resize', onViewportChange, { passive: true });
+window.addEventListener('orientationchange', function(){ setTimeout(function(){ measureHero(); onScroll(); }, 250); });
 
-/* ---------- seeks travados ---------- */
-var seekBusy = false, pendingTime = null;
+/* ---------- seeks travados ----------
+   Cada currentTime custa uma decodificação. Pedir um deslocamento menor que
+   meio quadro não muda nada na tela e ainda assim paga o preço inteiro, então
+   esses pedidos são descartados. */
+var seekBusy = false, pendingTime = null, wantT = -1;
+var HALF_FRAME = 0.02;
+function issueSeek(t){
+  seekBusy = true;
+  wantT = t;
+  try { video.currentTime = t; } catch(e){ seekBusy = false; }
+}
 function requestSeek(t){
   if (!video.duration || !isFinite(t)) return;
+  if (wantT >= 0 && Math.abs(t - wantT) < HALF_FRAME) return;
   if (seekBusy){ pendingTime = t; return; }
-  seekBusy = true;
-  try { video.currentTime = t; } catch(e){ seekBusy = false; }
+  issueSeek(t);
 }
 video.addEventListener('seeked', function(){
   seekBusy = false;
-  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; requestSeek(t); }
+  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; issueSeek(t); }
 });
 video.addEventListener('error', function(){ seekBusy = false; pendingTime = null; failVideo(); });
 
@@ -721,8 +759,12 @@ function onScroll(){
   target = heroProgress();
   if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
 }
+document.body.classList.add('hero-on');
 if ('IntersectionObserver' in window){
-  new IntersectionObserver(function(es){ heroOnScreen = es[0].isIntersecting; }).observe(hero);
+  new IntersectionObserver(function(es){
+    heroOnScreen = es[0].isIntersecting;
+    document.body.classList.toggle('hero-on', heroOnScreen);
+  }).observe(hero);
 }
 
 /* ---------- Blob transmitido com anel ---------- */
@@ -821,6 +863,7 @@ var GATES = [
 var MQLS = GATES.map(function(q){ return matchMedia(q); });
 var scrubOn = false;
 function enableScrub(){
+  measureHero();                    /* antes do initHero, que já lê o progresso */
   initHero();                       /* re-checa a montagem certa a cada chamada */
   if (scrubOn) return;
   scrubOn = true;
